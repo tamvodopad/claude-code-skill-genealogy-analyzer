@@ -16,7 +16,7 @@ A Claude Code skill for analyzing GEDCOM genealogy files with focus on finding a
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/tamvodopad/genealogy-analyzer.git
+git clone https://github.com/tamvodopad/claude-code-skill-genealogy-analyzer.git
 ```
 
 2. Create a symlink in your Claude Code skills directory:
