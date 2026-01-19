@@ -1,5 +1,7 @@
 # Genealogy Analyzer Skill for Claude Code
 
+**Author:** Konstantin Popov ([tamvodopad.com](https://tamvodopad.com))
+
 A Claude Code skill for analyzing GEDCOM genealogy files with focus on finding anomalies in marriages, births, and deaths. Specialized for Russian Orthodox traditions (pre-1917).
 
 ## Features
