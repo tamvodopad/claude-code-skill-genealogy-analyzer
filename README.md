@@ -1,102 +1,102 @@
-# Genealogy Analyzer Skill for Claude Code
+# Genealogy Analyzer — скилл для Claude Code
 
-**Author:** Konstantin Popov ([tamvodopad.com](https://tamvodopad.com))
+**Автор:** Константин Попов ([tamvodopad.com](https://tamvodopad.com))
 
-A Claude Code skill for analyzing GEDCOM genealogy files with focus on finding anomalies in marriages, births, and deaths. Specialized for Russian Orthodox traditions (pre-1917).
+Скилл для Claude Code, анализирующий генеалогические данные в формате GEDCOM. Специализация — поиск аномалий в датах браков, рождений и смертей с учётом русских православных традиций (до 1917 года).
 
-## Features
+## Возможности
 
-- Analyze marriage dates against Orthodox wedding traditions
-- Detect marriages in forbidden periods (fasting seasons)
-- Find atypical wedding dates (summer, harvest time)
-- Check first child birth dates relative to marriage
-- Support for Julian calendar dates
+- Анализ дат браков на соответствие православным традициям
+- Поиск браков в запретные периоды (посты)
+- Выявление нетипичных дат свадеб (лето, страда)
+- Проверка дат рождения первых детей относительно брака
+- Поддержка юлианского календаря
 
-## Installation
+## Установка
 
-### As a Claude Code Skill
+### Как скилл Claude Code
 
-1. Clone this repository:
+1. Клонируйте репозиторий:
 ```bash
 git clone https://github.com/tamvodopad/claude-code-skill-genealogy-analyzer.git
 ```
 
-2. Create a symlink in your Claude Code skills directory:
+2. Создайте символическую ссылку в директории скиллов Claude Code:
 ```bash
-ln -s /path/to/genealogy-analyzer ~/.claude/skills/genealogy-analyzer
+ln -s /path/to/claude-code-skill-genealogy-analyzer ~/.claude/skills/genealogy-analyzer
 ```
 
-Or copy files directly:
+Или скопируйте файлы напрямую:
 ```bash
-cp -r genealogy-analyzer ~/.claude/skills/
+cp -r claude-code-skill-genealogy-analyzer ~/.claude/skills/genealogy-analyzer
 ```
 
-3. The skill will be automatically available in Claude Code.
+3. Скилл автоматически станет доступен в Claude Code.
 
-## Usage
+## Использование
 
-The skill activates when you:
-- Ask to analyze a GEDCOM file for anomalies
-- Want to find atypical marriage dates
-- Ask about dates matching Orthodox traditions
-- Request investigation of specific families
+Скилл активируется когда вы:
+- Просите проанализировать GEDCOM файл на аномалии
+- Хотите найти нетипичные даты браков
+- Спрашиваете о соответствии дат православным традициям
+- Просите исследовать конкретную семью
 
-### Example Prompts
+### Примеры запросов
 
-- "Analyze my GEDCOM file for anomalies"
-- "Find atypical marriage dates in tree.ged"
-- "Check if this marriage date follows Orthodox traditions"
-- "Find marriages in forbidden periods before 1930"
+- «Проанализируй мой GEDCOM файл на аномалии»
+- «Найди нетипичные даты браков в tree.ged»
+- «Проверь, соответствует ли эта дата брака православным традициям»
+- «Найди браки в запретные периоды до 1930 года»
 
-### Standalone Scripts
+### Автономные скрипты
 
-#### Analyze Marriage Dates
+#### Анализ дат браков
 ```bash
 python3 analyze_marriages.py tree.ged
 python3 analyze_marriages.py tree.ged --before 1920
 python3 analyze_marriages.py tree.ged --before 1930 --output report.txt
 ```
 
-#### Check First Child Birth Dates
+#### Проверка дат рождения первых детей
 ```bash
 python3 check_first_child.py tree.ged
 ```
 
-## Orthodox Wedding Traditions
+## Православные свадебные традиции
 
-### Allowed Wedding Periods
+### Разрешённые периоды для венчания
 
-1. **Winter Wedding Season** (~66% of marriages)
-   - From Epiphany (Jan 7/19-20) to Maslenitsa week
+1. **Зимний свадебник** (~66% браков)
+   - От Крещения (7/19-20 января) до Масленицы
 
-2. **Spring Wedding Season** (~12%)
-   - From Krasnaya Gorka (1st Sunday after Easter) to Trinity
+2. **Весенний свадебник** (~12%)
+   - От Красной горки (первое воскресенье после Пасхи) до Троицы
 
-3. **Autumn Wedding Season** (~22%)
-   - From Pokrov (Oct 1/14) to Philip's Fast (Nov 14/27)
+3. **Осенний свадебник** (~22%)
+   - От Покрова (1/14 октября) до Филиппова заговенья (14/27 ноября)
 
-### Forbidden Periods
+### Запретные периоды
 
-- Great Lent (48 days before Easter)
-- Peter's Fast (after Trinity to Jun 29)
-- Assumption Fast (Aug 1-14)
-- Christmas Fast (Nov 15 - Dec 24)
+- Великий пост (48 дней до Пасхи)
+- Петров пост (после Троицы до 29 июня)
+- Успенский пост (1-14 августа)
+- Рождественский пост (15 ноября - 24 декабря)
 
-## Data Privacy
+## Конфиденциальность данных
 
-**IMPORTANT:** Never commit GEDCOM files with real genealogical data to public repositories. The `.gitignore` file excludes `*.ged` files by default.
+**ВАЖНО:** Никогда не коммитьте GEDCOM файлы с реальными генеалогическими данными в публичные репозитории. Файл `.gitignore` по умолчанию исключает `*.ged` файлы.
 
-## GEDCOM Format Support
+## Поддержка формата GEDCOM
 
-Supports GEDCOM 5.5.1 format with:
-- Julian calendar dates (`@#DJULIAN@`)
-- Approximate dates (ABT, BEF, AFT)
-- Standard date formats
+Поддерживается GEDCOM 5.5.1:
+- Даты по юлианскому календарю (`@#DJULIAN@`)
+- Приблизительные даты (ABT, BEF, AFT)
+- Стандартные форматы дат
 
-## License
+## Лицензия
 
 MIT License
 
-## Contributing
+## Участие в разработке
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Приветствуются pull request'ы и предложения по улучшению!
