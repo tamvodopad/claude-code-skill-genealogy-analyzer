@@ -17,24 +17,95 @@
 
 ## Установка
 
-### Как скилл Claude Code
+### Claude Code
 
 1. Клонируйте репозиторий:
 ```bash
 git clone https://github.com/tamvodopad/claude-code-skill-genealogy-analyzer.git
 ```
 
-2. Создайте символическую ссылку в директории скиллов Claude Code:
+2. Создайте символическую ссылку в директории скиллов:
 ```bash
 ln -s /path/to/claude-code-skill-genealogy-analyzer ~/.claude/skills/genealogy-analyzer
 ```
 
-Или скопируйте файлы напрямую:
+Или скопируйте файлы:
 ```bash
 cp -r claude-code-skill-genealogy-analyzer ~/.claude/skills/genealogy-analyzer
 ```
 
 3. Скилл автоматически станет доступен в Claude Code.
+
+**Проверка:** запустите `claude` и попросите «проанализируй GEDCOM файл на аномалии».
+
+---
+
+### OpenAI Codex CLI
+
+[Codex CLI](https://developers.openai.com/codex/cli/) поддерживает скиллы в формате, совместимом с этим репозиторием.
+
+1. Убедитесь, что скиллы включены в `~/.codex/config.toml`
+
+2. Клонируйте репозиторий в директорию скиллов Codex:
+```bash
+git clone https://github.com/tamvodopad/claude-code-skill-genealogy-analyzer.git ~/.codex/skills/genealogy-analyzer
+```
+
+3. Переименуйте файл скилла (Codex использует `SKILL.md`):
+```bash
+cd ~/.codex/skills/genealogy-analyzer
+# SKILL.md уже есть в репозитории, Codex его подхватит
+```
+
+4. Перезапустите Codex CLI.
+
+**Документация:** [Create Skills](https://developers.openai.com/codex/skills/create-skill/) | [Skills Catalog](https://github.com/openai/skills)
+
+---
+
+### Yandex Алиса AI
+
+> ⚠️ **Важно:** Навыки Алисы — это веб-сервисы, отвечающие на голосовые команды. Этот скилл предназначен для локального анализа файлов и **не может быть напрямую использован** как навык Алисы.
+
+Однако, можно создать навык-обёртку:
+
+1. **Создайте веб-сервис** на Python/Node.js, который:
+   - Принимает GEDCOM файл (через загрузку или ссылку)
+   - Запускает скрипты анализа
+   - Возвращает результаты голосом
+
+2. **Зарегистрируйте навык** в [Яндекс Диалогах](https://dialogs.yandex.ru/development)
+
+3. **Разверните backend** через [Yandex Cloud Functions](https://cloud.yandex.ru/docs/functions/tutorials/alice-skill)
+
+**Пример интеграции:**
+```python
+# handler.py для Yandex Cloud Functions
+import json
+from analyze_marriages import analyze_marriages_data
+
+def handler(event, context):
+    # Парсим запрос от Алисы
+    request = json.loads(event['body'])
+    command = request['request']['command']
+
+    if 'анализ браков' in command.lower():
+        # Анализируем заранее загруженный файл
+        result = analyze_marriages_data('/tmp/tree.ged')
+        response_text = f"Найдено {result['total']} браков. {result['forbidden']} в запретные периоды."
+    else:
+        response_text = "Скажите: анализ браков"
+
+    return {
+        'statusCode': 200,
+        'body': json.dumps({
+            'response': {'text': response_text, 'end_session': False},
+            'version': '1.0'
+        })
+    }
+```
+
+**Документация:** [Разработка навыков](https://yandex.ru/dev/dialogs/alice/doc/ru/quickstart-about.html) | [Примеры на GitHub](https://github.com/yandex/alice-skills)
 
 ## Использование
 
