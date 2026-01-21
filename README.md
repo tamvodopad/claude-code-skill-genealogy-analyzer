@@ -82,6 +82,71 @@ cd ~/.codex/skills/genealogy-analyzer
 
 ---
 
+### Cursor IDE
+
+[Cursor](https://cursor.com) поддерживает кастомные правила и контекст через систему Rules.
+
+#### Способ 1: Project Rules (рекомендуемый)
+
+1. **Создайте директорию правил** в корне проекта с GEDCOM файлом:
+```bash
+mkdir -p .cursor/rules
+```
+
+2. **Создайте файл правила** `.cursor/rules/genealogy.mdc`:
+```markdown
+---
+description: "Genealogy analysis with Russian Orthodox traditions"
+globs: ["*.ged", "*.gedcom"]
+alwaysApply: false
+---
+
+# Genealogy Analyzer Context
+
+При работе с GEDCOM файлами используй следующий контекст...
+```
+
+3. **Скопируйте содержимое `SKILL.md`** в файл правила (после frontmatter)
+
+4. **Перезапустите Cursor** — правило будет загружаться при работе с `.ged` файлами
+
+#### Способ 2: Глобальные User Rules
+
+1. Откройте **Cursor → Settings → Cursor Settings → Rules for AI**
+2. Добавьте ключевые инструкции из `SKILL.md`:
+```
+При анализе генеалогических данных (GEDCOM):
+- Учитывай юлианский календарь (до 1918)
+- Проверяй даты браков на соответствие православным традициям
+- Помни о запретных периодах: Великий пост, Петров пост, Успенский пост, Рождественский пост
+```
+
+#### Способ 3: Файл .cursorrules (legacy)
+
+Создайте `.cursorrules` в корне проекта:
+```bash
+cp /path/to/genealogy-analyzer/SKILL.md .cursorrules
+```
+
+> **Примечание:** `.cursorrules` — устаревший подход. Рекомендуется использовать `.cursor/rules/`.
+
+#### Agent Skills (экспериментально)
+
+Agent Skills доступны в nightly-версии Cursor:
+1. **Cursor → Settings → Beta → Update Channel → Nightly**
+2. Создайте `.cursor/commands/analyze-marriages.md`:
+```markdown
+---
+description: "Analyze GEDCOM for atypical marriages"
+---
+
+Проанализируй GEDCOM файл {{file}} на аномальные браки по православным традициям.
+```
+
+**Документация:** [Cursor Rules](https://cursor.com/docs/context/rules) | [awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules)
+
+---
+
 ### YandexGPT / Yandex AI Studio
 
 [Yandex AI Studio](https://yandex.cloud/ru/services/ai-studio) позволяет создавать ИИ-агентов с системными инструкциями и базами знаний без программирования.
