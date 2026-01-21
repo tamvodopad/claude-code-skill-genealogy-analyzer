@@ -1,6 +1,6 @@
 ---
 name: genealogy-analyzer
-description: Analyze GEDCOM genealogy files to find anomalies in marriages, births, deaths. Focus on Russian Orthodox traditions (pre-1917). Use when user asks to analyze genealogy data, find atypical marriages, investigate family anomalies, validate dates, or check names against Orthodox nameday calendar (svyatsy).
+description: Analyze GEDCOM genealogy files to find anomalies in marriages, births, deaths. Focus on Russian Orthodox traditions (pre-1917). Use when user asks to analyze genealogy data, find atypical marriages, investigate family anomalies, validate dates, check patronymics, find brick walls (dead ends), assess data quality, find replacement names pattern, check names against Orthodox nameday calendar (svyatsy), calculate inbreeding coefficient (COI), analyze geographic migration, study longevity/lifespan statistics, analyze generation intervals, research surname etymology, analyze sibling patterns, study marriage age and endogamy, analyze multiple marriages and widowhood, study occupations and social mobility, analyze war impact on demographics, detect epidemics from death clusters, find twins, analyze orphans, study name trends, analyze godparent networks, analyze causes of death, analyze wedding witnesses and baptism sponsors, export timeline data, or get comprehensive tree statistics.
 allowed-tools: Bash,Read,Write,Grep,Glob
 ---
 
@@ -17,6 +17,130 @@ allowed-tools: Bash,Read,Write,Grep,Glob
 - Просит исследовать конкретную семью на аномалии
 - Хочет проверить даты рождения детей относительно брака родителей
 - Хочет проверить соответствие имён дням крещения по святцам
+- Хочет найти ошибки или несоответствия в датах (validate_dates.py)
+- Хочет проверить соответствие отчеств именам отцов (patronymic_check.py)
+- Ищет «кирпичные стены» — тупики без известных родителей (brick_walls.py)
+- Хочет оценить качество/полноту данных в дереве (data_quality.py)
+- Ищет паттерн «замещающих имён» умерших младенцев (replacement_names.py)
+- Хочет рассчитать коэффициент инбридинга (родства супругов) (inbreeding.py)
+- Анализирует географию происхождения семьи или миграцию (migration_analysis.py)
+- Изучает продолжительность жизни предков (longevity.py)
+- Хочет узнать интервалы между поколениями (generation_stats.py)
+- Исследует фамилии и их происхождение (surname_analysis.py)
+
+## Доступные скрипты
+
+### Базовые скрипты анализа
+
+| Скрипт | Назначение |
+|--------|------------|
+| `analyze_marriages.py` | Анализ дат браков на соответствие православным традициям |
+| `analyze_births.py` | Аналитика рождений: распределение по годам, месяцам, сезонам зачатия |
+| `check_first_child.py` | Проверка дат рождения первых детей (добрачная беременность) |
+| `check_nameday.py` | Проверка имён по святцам + поиск родственников-тёзок |
+| `find_namesakes.py` | Поиск родственников с одинаковыми именами |
+
+### Скрипты валидации данных
+
+| Скрипт | Назначение |
+|--------|------------|
+| `validate_dates.py` | Детектор аномалий дат (рождение после смерти родителя и т.д.) |
+| `patronymic_check.py` | Проверка соответствия отчеств именам отцов |
+| `brick_walls.py` | Анализ «кирпичных стен» — конечных предков без родителей |
+| `data_quality.py` | Оценка качества и полноты данных |
+| `replacement_names.py` | Поиск «замещающих имён» умерших младенцев |
+
+### Продвинутая аналитика
+
+| Скрипт | Назначение |
+|--------|------------|
+| `inbreeding.py` | Расчёт коэффициента инбридинга (COI) по алгоритму Райта |
+| `migration_analysis.py` | Анализ географической миграции по поколениям |
+| `longevity.py` | Статистика продолжительности жизни |
+| `generation_stats.py` | Интервалы между поколениями, возраст родительства |
+| `surname_analysis.py` | Анализ и этимология фамилий |
+
+### Семейные паттерны
+
+| Скрипт | Назначение |
+|--------|------------|
+| `sibling_analysis.py` | Интервалы между рождениями сиблингов, смертность, соотношение полов |
+| `marriage_patterns.py` | Возраст брака, эндогамия/экзогамия, разница в возрасте супругов |
+| `multiple_marriages.py` | Повторные браки, вдовство, интервалы между браками |
+
+### Социально-историческая аналитика
+
+| Скрипт | Назначение |
+|--------|------------|
+| `occupation_analysis.py` | Профессии и сословия, социальная мобильность |
+| `war_impact.py` | Влияние войн на демографию (1812, Крымская, ПМВ, ВОВ и др.) |
+| `epidemic_detection.py` | Детекция эпидемий по кластерам смертей |
+| `orphan_analysis.py` | Анализ сирот и потери родителей |
+
+### Специфические паттерны
+
+| Скрипт | Назначение |
+|--------|------------|
+| `twin_detection.py` | Поиск близнецов по датам рождения |
+| `name_trends.py` | Популярность имён по периодам, тренды |
+| `godparent_network.py` | Сеть крёстных родителей, кумовство |
+| `cause_of_death.py` | Анализ причин смерти, категоризация |
+| `witness_analysis.py` | Анализ свидетелей на свадьбах и крещениях |
+
+### Экспорт и обзор
+
+| Скрипт | Назначение |
+|--------|------------|
+| `timeline_export.py` | Экспорт событий в JSON/CSV/HTML для визуализации |
+| `tree_statistics.py` | Общая статистика древа, метрики качества |
+
+## Библиотека парсинга (lib/)
+
+Общая библиотека для работы с GEDCOM файлами:
+
+```python
+from lib import parse_gedcom, Person, Family, GedcomData
+
+# Парсинг файла
+data = parse_gedcom("tree.ged")
+
+# Доступ к данным
+person = data.get_person("@I1@")
+father, mother = data.get_parents(person)
+children = data.get_children(person)
+siblings = data.get_siblings(person)
+spouses = data.get_spouses(person)
+grandparents = data.get_grandparents(person)
+```
+
+### Модели данных
+
+```python
+@dataclass
+class Person:
+    id: str
+    name: str
+    given_name: str      # Имя
+    surname: str         # Фамилия
+    patronymic: str      # Отчество
+    sex: str             # M/F
+    birth_date: Optional[date]
+    birth_year: Optional[int]
+    birth_place: str
+    death_date: Optional[date]
+    death_year: Optional[int]
+    # ... и другие поля
+
+@dataclass
+class Family:
+    id: str
+    husband_id: Optional[str]
+    wife_id: Optional[str]
+    children_ids: List[str]
+    marriage_date: Optional[date]
+    marriage_year: Optional[int]
+    marriage_place: str
+```
 
 ## GEDCOM формат
 
