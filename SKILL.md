@@ -1,6 +1,6 @@
 ---
 name: genealogy-analyzer
-description: Analyze GEDCOM genealogy files to find anomalies in marriages, births, deaths. Focus on Russian Orthodox traditions (pre-1917). Use when user asks to analyze genealogy data, find atypical marriages, investigate family anomalies, or validate dates.
+description: Analyze GEDCOM genealogy files to find anomalies in marriages, births, deaths. Focus on Russian Orthodox traditions (pre-1917). Use when user asks to analyze genealogy data, find atypical marriages, investigate family anomalies, validate dates, or check names against Orthodox nameday calendar (svyatsy).
 allowed-tools: Bash,Read,Write,Grep,Glob
 ---
 
@@ -16,6 +16,7 @@ allowed-tools: Bash,Read,Write,Grep,Glob
 - Спрашивает о соответствии дат православным традициям
 - Просит исследовать конкретную семью на аномалии
 - Хочет проверить даты рождения детей относительно брака родителей
+- Хочет проверить соответствие имён дням крещения по святцам
 
 ## GEDCOM формат
 
