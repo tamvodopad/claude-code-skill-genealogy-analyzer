@@ -181,8 +181,9 @@ class Family:
 
 #### 2. Весенний свадебник (~12%)
 - **Начало**: Красная горка (первое воскресенье после Пасхи, +7 дней)
-- **Конец**: Троица (Пятидесятница, +49 дней после Пасхи)
-- Длительность: ~6 недель
+- **Конец**: Неделя всех святых (воскресенье через неделю после Троицы, +56 дней после Пасхи)
+- Длительность: ~7 недель
+- Включает Троицу, День Святого Духа и Неделю всех святых
 
 #### 3. Осенний свадебник (~22%)
 - **Начало**: Покров (1 октября ст.ст. / 14 октября н.ст.)
@@ -192,7 +193,7 @@ class Family:
 ### Запретные периоды
 
 1. **Великий пост** — 48 дней до Пасхи
-2. **Петров пост** — от понедельника после Троицы до 29 июня (ст.ст.)
+2. **Петров пост** — от понедельника через неделю после Троицы (после Недели всех святых) до 29 июня (ст.ст.) включительно
 3. **Успенский пост** — 1-14 августа (ст.ст.)
 4. **Рождественский (Филиппов) пост** — 15 ноября - 24 декабря (ст.ст.)
 5. **Святки** — 25 декабря - 6 января (ст.ст.)
@@ -255,9 +256,10 @@ def get_wedding_windows(year: int):
     maslenitsa_end = easter - timedelta(days=49)  # Начало Великого поста
     winter_end = maslenitsa_end - timedelta(days=7)  # Конец Масленицы
 
-    # Весенний свадебник: Красная горка (+7) — Троица (+49)
+    # Весенний свадебник: Красная горка (+7) — Неделя всех святых (+56)
     krasnaya_gorka = easter + timedelta(days=7)
     trinity = easter + timedelta(days=49)
+    spring_end = trinity + timedelta(days=7)  # Неделя всех святых
 
     # Осенний свадебник: Покров (1 окт) — Филиппово заговенье (14 ноя)
     pokrov = date(year, 10, 1)
@@ -265,7 +267,7 @@ def get_wedding_windows(year: int):
 
     return {
         'winter': (winter_start, winter_end),
-        'spring': (krasnaya_gorka, trinity),
+        'spring': (krasnaya_gorka, spring_end),
         'autumn': (pokrov, filippov),
         'easter': easter
     }
@@ -273,6 +275,9 @@ def get_wedding_windows(year: int):
 def get_forbidden_periods(year: int):
     """
     Возвращает запретные периоды для венчания.
+
+    Петров пост начинается в понедельник через неделю после Троицы
+    (на следующий день после Недели всех святых).
     """
     easter_month, easter_day = orthodox_easter_julian(year)
     easter = date(year, easter_month, easter_day)
@@ -280,7 +285,7 @@ def get_forbidden_periods(year: int):
 
     return {
         'great_lent': (easter - timedelta(days=48), easter - timedelta(days=1)),
-        'petrov_post': (trinity + timedelta(days=1), date(year, 6, 28)),
+        'petrov_post': (trinity + timedelta(days=8), date(year, 6, 29)),
         'assumption_post': (date(year, 8, 1), date(year, 8, 14)),
         'christmas_post': (date(year, 11, 15), date(year, 12, 24)),
         'svyatki': (date(year, 12, 25), date(year + 1, 1, 6)),

@@ -77,6 +77,9 @@ def julian_to_gregorian(julian_date: date) -> date:
 def get_wedding_windows_julian(year: int) -> List[Tuple[date, date, str]]:
     """
     Возвращает разрешённые периоды для венчания (юлианский календарь).
+
+    Весенний свадебник продолжается до начала Петрова поста,
+    включая неделю между Троицей и Неделей всех святых.
     """
     easter = orthodox_easter_julian(year)
 
@@ -94,9 +97,11 @@ def get_wedding_windows_julian(year: int) -> List[Tuple[date, date, str]]:
         winter_start = date(year, 1, 7)
         winter_end = maslenitsa_start - timedelta(days=1)
 
-    # Весенний свадебник: Красная горка — Троица
+    # Весенний свадебник: Красная горка — Неделя всех святых (включительно)
+    # Продолжается до начала Петрова поста (за день до него)
     krasnaya_gorka = easter + timedelta(days=7)
     trinity = easter + timedelta(days=49)
+    spring_end = trinity + timedelta(days=7)  # Неделя всех святых (воскресенье)
 
     # Осенний свадебник: Покров — Филиппово заговенье
     pokrov = date(year, 10, 1)
@@ -104,7 +109,7 @@ def get_wedding_windows_julian(year: int) -> List[Tuple[date, date, str]]:
 
     return [
         (winter_start, winter_end, "Зимний свадебник (Крещение - Масленица)"),
-        (krasnaya_gorka, trinity, "Весенний свадебник (Красная горка - Троица)"),
+        (krasnaya_gorka, spring_end, "Весенний свадебник (Красная горка - Неделя всех святых)"),
         (pokrov, filippov, "Осенний свадебник (Покров - Филиппово заговенье)"),
     ]
 
@@ -112,13 +117,16 @@ def get_wedding_windows_julian(year: int) -> List[Tuple[date, date, str]]:
 def get_forbidden_periods_julian(year: int) -> List[Tuple[date, date, str]]:
     """
     Возвращает запретные периоды для венчания (юлианский календарь).
+
+    Петров пост начинается в понедельник через неделю после Троицы
+    (на следующий день после Недели всех святых) и длится до 29 июня включительно.
     """
     easter = orthodox_easter_julian(year)
     trinity = easter + timedelta(days=49)
 
     return [
         (easter - timedelta(days=48), easter - timedelta(days=1), "Великий пост"),
-        (trinity + timedelta(days=1), date(year, 6, 28), "Петров пост"),
+        (trinity + timedelta(days=8), date(year, 6, 29), "Петров пост"),
         (date(year, 8, 1), date(year, 8, 14), "Успенский пост"),
         (date(year, 11, 15), date(year, 12, 24), "Рождественский пост"),
     ]
