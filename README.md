@@ -649,7 +649,9 @@ python3 tree_statistics.py tree.ged --output report.txt
 
 ## Лицензия
 
-MIT License
+MIT License — см. файл [LICENSE](LICENSE).
+
+Copyright (c) 2026 Konstantin Popov
 
 ## Участие в разработке
 
